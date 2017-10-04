@@ -31,8 +31,30 @@ class Model {
       this.inform();
    }
 }
-const Header = () => {
+
+const Application = ({ title, model }) => {
+   const items = model.todos.map((todo, index) => {
       return (
+            <li key={todo.id}>
+            <input
+               type="text"
+               value={todo.text}
+               onChange={e =>
+                  model.updateTodo(index, {
+                     id: todo.id,
+                     text: e.target.value,
+                     completed: todo.completed
+                  })}
+            />
+            <label>Confirmed
+                  <input type="checkbox"/>
+            </label>
+            <button onClick={() => model.removeTodo(todo)}> delete item</button>
+         </li>
+      )
+
+   });
+   return (
       <div className="wrapper">
             <header>
                   <h1>RSVP</h1>
@@ -50,60 +72,12 @@ const Header = () => {
             <div className="main">	
                   <h2>Invitees</h2>
                   <ul id="invitedList">
-                        <Items/>
+                        {items}
                   </ul>	
             </div>
       </div>
       );
-    }
-/*
-const List = () => {
-      return(
-      <div>
-            {      
-            <div className="main">	
-                  <h2>Invitees</h2>
-                  <ul id="invitedList">
-                  </ul>	
-            </div>
-            }
-      </div>
-)
-}
-*/
-const Items =({todo}) => { 
-      return(
-      <div>
-            {
-            model.todos.map((todo, index) => {
-            return (
-            <li key={todo.id}>
-            <input
-               type="text"
-               value={todo.text}
-               onChange={e =>
-                  model.updateTodo(index, {
-                     id: todo.id,
-                     text: e.target.value,
-                     completed: todo.completed
-                  })}
-            />
-            <button onClick={() => model.removeTodo(todo)}> delete item</button>
-         </li>
-      );
-      })
-            }
-      </div>
-   )
-}
-
-const Application = ({ title, model }) => {
-      return (
-        <div className='scoreboard'>
-          <Header/>
-        </div>
-      );
-    }
+};
 let model = new Model();
 let counter = 1;
 
