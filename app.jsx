@@ -37,23 +37,70 @@ const Header = () => {
             <header>
                   <h1>RSVP</h1>
                   <p> Registration App </p>
-                  <form id="registrar">
-                        <input type="text" name="name" placeholder="Invite Someone"/>
+                  <form id="registrar"
+                  onSubmit={e => {
+                  e.preventDefault();
+                  model.addTodo(model.inputValue);
+                  }}
+                  >
+                        <input type="text" name="name" placeholder="Invite Someone"  onChange={e => (model.inputValue = e.target.value)}/>
                         <button type="submit" name="submit" value="submit">Submit</button>
                   </form>
             </header>
             <div className="main">	
                   <h2>Invitees</h2>
-                  <ul id="invitedList"></ul>	
+                  <ul id="invitedList">
+                        <Items/>
+                  </ul>	
             </div>
       </div>
       );
     }
+/*
+const List = () => {
+      return(
+      <div>
+            {      
+            <div className="main">	
+                  <h2>Invitees</h2>
+                  <ul id="invitedList">
+                  </ul>	
+            </div>
+            }
+      </div>
+)
+}
+*/
+const Items =({todo}) => { 
+      return(
+      <div>
+            {
+            model.todos.map((todo, index) => {
+            return (
+            <li key={todo.id}>
+            <input
+               type="text"
+               value={todo.text}
+               onChange={e =>
+                  model.updateTodo(index, {
+                     id: todo.id,
+                     text: e.target.value,
+                     completed: todo.completed
+                  })}
+            />
+            <button onClick={() => model.removeTodo(todo)}> delete item</button>
+         </li>
+      );
+      })
+            }
+      </div>
+   )
+}
 
-const Application = () => {
+const Application = ({ title, model }) => {
       return (
         <div className='scoreboard'>
-          <Header/>   
+          <Header/>
         </div>
       );
     }
